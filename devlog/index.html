@@ -1,47 +1,17 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devlog - Uusin postaus</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <nav class="container">
-        <a href="../index.html">← Etusivu</a>
-        <div class="nav-controls">
-            <button id="random-btn">Arvo postaus</button>
-            <a href="archive.html" class="btn">Arkisto</a>
-        </div>
-    </nav>
-
-    <main class="container">
-        <article id="post-content">
-            <p>Ladataan uusinta postausta...</p>
-        </article>
-    </main>
-
     <script src="posts.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const postContainer = document.getElementById('post-content');
-            
-            // Tarkistetaan, että meillä on postauksia
-            if (typeof posts !== 'undefined' && posts.length > 0) {
-                // posts[0] on listan uusin postaus
-                const latestPost = posts[0];
-                
-                // Haetaan postauksen sisältö content-kansiosta
-                fetch(`content/${latestPost.path}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        postContainer.innerHTML = html;
-                    })
-                    .catch(err => {
-                        postContainer.innerHTML = "<p>Postauksen lataaminen epäonnistui.</p>";
-                    });
-            }
-        });
+        // Redirect user to the latest post defined in posts.js
+        if (typeof devlogPosts !== 'undefined' && devlogPosts.length > 0) {
+            const latest = devlogPosts[devlogPosts.length - 1];
+            window.location.href = "content/" + latest.path;
+        }
     </script>
+</head>
+<body>
+    <p>Redirecting to the latest post...</p>
 </body>
 </html>
