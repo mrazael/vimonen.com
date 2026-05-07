@@ -1,17 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="posts.js"></script>
-    <script>
-        // Redirect user to the latest post defined in posts.js
-        if (typeof devlogPosts !== 'undefined' && devlogPosts.length > 0) {
-            const latest = devlogPosts[devlogPosts.length - 1];
-            window.location.href = "content/" + latest.path;
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devlog - Vimonen</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <p>Redirecting to the latest post...</p>
+    <nav>
+        <div class="container">
+            <a href="../index.html" class="logo">BACK TO HOME</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="devlog-nav-wrapper">
+            <div class="devlog-nav"></div>
+        </div>
+
+        <article class="devlog-post">
+            <h1 id="post-title">Ladataan...</h1>
+            <small id="post-date"></small>
+            <hr>
+            <div id="post-content">
+                </div>
+        </article>
+    </main>
+
+    <script src="posts.js"></script>
+    <script src="nav.js"></script>
+    <script>
+        async function _lataa_sisalto() {
+            /**
+             * Haetaan ID URL-parametreista tai valitaan viimeisin postaus oletuksena.
+             */
+            const params = new URLSearchParams(window.location.search);
+            let postId = params.get('id');
+            
+            if (!postId && devlogPosts.length > 0) {
+                // Erotetaan ID polusta (esim. "2026/05/0000.html" -> "0000")
+                const latest = devlogPosts[devlogPosts.length - 1];
+                postId = latest.path.split('/').pop().replace('.html', '');
+            }
+
+            const postData = devlogPosts.find(p => p.path.includes(postId));
+            
+            if (postData) {
+                document.getElementById('post-title').innerText = postData.title;
+                document.getElementById('post-date').innerText = postData.date;
+                
+                try {
+                    // Haetaan raakasisältö posts-alikansiosta
+                    const response = await fetch(`posts/${postId}.txt`);
+                    if (!response.ok) throw new Error();
+                    const text = await response.text();
+                    document.getElementById('post-content').innerHTML = text;
+                } catch (e) {
+                    document.getElementById('post-content').innerText = "Sisältöä ei löytynyt.";
+                }
+            }
+        }
+        _lataa_sisalto();
+    </script>
 </body>
 </html>
