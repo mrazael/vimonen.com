@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{Flight 3919} devlog</title>
+    <title>Devlog - Vimonen</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -24,8 +24,10 @@
                 </div>
         </article>
 
+        <div class="devlog-nav"></div>
+
         <section class="devlog-archive-inline">
-            <h3>Archive</h3>
+            <h3>Kaikki päivitykset</h3>
             <div id="inline-archive-list"></div>
         </section>
     </main>
@@ -40,15 +42,19 @@
     <script src="nav.js"></script>
     <script>
         async function _lataa_sisalto() {
+            /**
+             * Hakee postauksen tiedot URL-parametrin perusteella ja päivittää DOM-elementit.
+             */
             const params = new URLSearchParams(window.location.search);
             let postId = params.get('id');
             
-            // Valitaan postaus (uusin oletuksena)
             let postData = postId 
                 ? devlogPosts.find(p => p.id === postId || p.path.endsWith(postId))
                 : devlogPosts[devlogPosts.length - 1];
 
             if (postData) {
+                const tunnus = postData.id || postData.path.split('/').pop();
+                
                 document.getElementById('post-title').innerText = postData.title;
                 document.getElementById('post-date').innerText = postData.date;
                 
@@ -56,30 +62,35 @@
                     const response = await fetch(`content/${postData.path}.txt`);
                     if (!response.ok) throw new Error();
                     const text = await response.text();
+                    
                     document.getElementById('post-content').innerHTML = text;
                     
-                    // Päivitetään arkisto ja nuoli
-                    _paivita_inline_arkisto(postData.id || postData.path.split('/').pop());
+                    // Päivitetään muut komponentit vasta kun sisältö on ladattu
+                    _paivita_navigointi(devlogPosts, tunnus);
+                    _paivita_inline_arkisto(tunnus);
                 } catch (e) {
-                    document.getElementById('post-content').innerText = "Sisältöä ei löytynyt.";
+                    document.getElementById('post-content').innerText = "Virhe: Sisältöä ei löytynyt.";
                 }
             }
         }
 
-        function _paivita_inline_arkisto(currentId) {
+        function _paivita_inline_arkisto(nykyinenId) {
+            /**
+             * Rakentaa arkistolistan ja korostaa aktiivisen postauksen.
+             */
             const list = document.getElementById("inline-archive-list");
             if (!list) return;
             list.innerHTML = "";
             
             [...devlogPosts].reverse().forEach(post => {
                 const id = post.id || post.path.split('/').pop();
-                const isCurrent = id === currentId;
+                const onNykyinen = id === nykyinenId;
                 
                 const item = document.createElement("div");
-                item.className = `archive-row ${isCurrent ? 'active' : ''}`;
+                item.className = `archive-row ${onNykyinen ? 'active' : ''}`;
                 
                 item.innerHTML = `
-                    <span class="indicator">${isCurrent ? '➔' : ''}</span>
+                    <span class="indicator">${onNykyinen ? '➔' : ''}</span>
                     <span class="date">${post.date}</span>
                     <a href="index.html?id=${id}">${post.title}</a>
                 `;
@@ -87,7 +98,6 @@
             });
         }
 
-        // Käynnistys
         _lataa_sisalto();
     </script>
 </body>
