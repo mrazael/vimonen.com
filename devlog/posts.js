@@ -5,7 +5,7 @@
 const devlogPosts = [
     { 
         id: "0000", 
-        title: "Github Pages setup", 
+        title: "Page setup", 
         date: "May 7th, 2026",
         path: "2026/05/0000" 
     },
