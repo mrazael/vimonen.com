@@ -30,37 +30,31 @@
     <script src="posts.js"></script>
     <script src="nav.js"></script>
     <script>
-        async function _lataa_sisalto() {
-            /**
-             * Haetaan ID URL-parametreista tai valitaan viimeisin postaus oletuksena.
-             */
-            const params = new URLSearchParams(window.location.search);
-            let postId = params.get('id');
+    async function _lataa_sisalto() {
+        const params = new URLSearchParams(window.location.search);
+        let postId = params.get('id');
+        
+        // Jos ID:tä ei ole URL:ssa, otetaan viimeisin
+        let postData = postId 
+            ? devlogPosts.find(p => p.id === postId || p.path.endsWith(postId))
+            : devlogPosts[devlogPosts.length - 1];
+    
+        if (postData) {
+            document.getElementById('post-title').innerText = postData.title;
+            document.getElementById('post-date').innerText = postData.date;
             
-            if (!postId && devlogPosts.length > 0) {
-                // Erotetaan ID polusta (esim. "2026/05/0000.html" -> "0000")
-                const latest = devlogPosts[devlogPosts.length - 1];
-                postId = latest.path.split('/').pop().replace('.html', '');
-            }
-
-            const postData = devlogPosts.find(p => p.path.includes(postId));
-            
-            if (postData) {
-                document.getElementById('post-title').innerText = postData.title;
-                document.getElementById('post-date').innerText = postData.date;
-                
-                try {
-                    // Haetaan raakasisältö posts-alikansiosta
-                    const response = await fetch(`posts/${postId}.txt`);
-                    if (!response.ok) throw new Error();
-                    const text = await response.text();
-                    document.getElementById('post-content').innerHTML = text;
-                } catch (e) {
-                    document.getElementById('post-content').innerText = "Sisältöä ei löytynyt.";
-                }
+            try {
+                // Hakee tiedoston polulla: content/2026/05/0000.txt
+                const response = await fetch(`content/${postData.path}.txt`);
+                if (!response.ok) throw new Error();
+                const text = await response.text();
+                document.getElementById('post-content').innerHTML = text;
+            } catch (e) {
+                document.getElementById('post-content').innerText = "Sisältöä ei löytynyt polusta: content/" + postData.path + ".txt";
             }
         }
-        _lataa_sisalto();
+    }
+    _lataa_sisalto();
     </script>
 </body>
 </html>
