@@ -3,8 +3,3 @@
     This is the first step in documenting the journey of developing 
     my first own game from scratch.
 </p>
-
-<p>
-    The setup includes a custom domain, automated navigation 
-    between posts, and a clean archive. Stay tuned for more updates!
-</p>
