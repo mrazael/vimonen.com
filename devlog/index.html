@@ -3,38 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devlog - Vimonen</title>
-    <link rel="stylesheet" href="../css/style.css"> 
+    <title>Devlog - Uusin postaus</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <a href="../index.html" class="logo">VIMONEN</a>
+    <nav class="container">
+        <a href="../index.html">← Etusivu</a>
+        <div class="nav-controls">
+            <button id="random-btn">Arvo postaus</button>
+            <a href="archive.html" class="btn">Arkisto</a>
         </div>
     </nav>
 
     <main class="container">
-        <h1>Devlog Arkisto</h1>
-        <div id="post-list" class="post-list"></div>
+        <article id="post-content">
+            <p>Ladataan uusinta postausta...</p>
+        </article>
     </main>
 
     <script src="posts.js"></script>
     <script>
-        const listElement = document.getElementById("post-list");
-        
-        /**
-         * Luodaan arkistolista uusimmasta vanhimpaan.
-         */
-        const reversedPosts = [...devlogPosts].reverse();
-
-        reversedPosts.forEach(post => {
-            const article = document.createElement("article");
-            article.innerHTML = `
-                <a href="content/${post.path}"><h3>${post.title}</h3></a>
-                <small>${post.date}</small>
-                <hr>
-            `;
-            listElement.appendChild(article);
+        document.addEventListener("DOMContentLoaded", () => {
+            const postContainer = document.getElementById('post-content');
+            
+            // Tarkistetaan, että meillä on postauksia
+            if (typeof posts !== 'undefined' && posts.length > 0) {
+                // posts[0] on listan uusin postaus
+                const latestPost = posts[0];
+                
+                // Haetaan postauksen sisältö content-kansiosta
+                fetch(`content/${latestPost.path}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        postContainer.innerHTML = html;
+                    })
+                    .catch(err => {
+                        postContainer.innerHTML = "<p>Postauksen lataaminen epäonnistui.</p>";
+                    });
+            }
         });
     </script>
 </body>
