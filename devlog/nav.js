@@ -1,37 +1,38 @@
 /**
- * Luo ja päivittää navigointipainikkeet kaikkiin sivun navigointikontentteihin.
- * @param {Array} kaikkiPostaukset - Lista kaikista devlog-postauksista.
- * @param {string} nykyinenId - Ladatun postauksen tunniste (ID tai polun pääte).
+ * Päivittää kaikki sivun navigointipainikkeet.
+ * @param {Array} postaukset - Lista postausobjekteista.
+ * @param {string} nykyinenId - Aktiivisen postauksen tunniste.
  */
-function _paivita_navigointi(kaikkiPostaukset, nykyinenId) {
+function _paivita_navigointi(postaukset, nykyinenId) {
     const containers = document.querySelectorAll('.devlog-nav');
     if (!containers.length) return;
 
-    const currentIndex = kaikkiPostaukset.findIndex(p => 
+    const currentIndex = postaukset.findIndex(p => 
         p.id === nykyinenId || p.path.endsWith(nykyinenId)
     );
 
-    const luoPainike = (label, kohdeIdx) => {
-        const onKaytossa = kohdeIdx >= 0 && kohdeIdx < kaikkiPostaukset.length;
-        const kohde = onKaytossa ? kaikkiPostaukset[kohdeIdx] : null;
+    const luoNappi = (label, kohdeIdx) => {
+        const onKelvollinen = kohdeIdx >= 0 && kohdeIdx < postaukset.length;
+        const kohde = onKelvollinen ? postaukset[kohdeIdx] : null;
         const id = kohde ? (kohde.id || kohde.path.split('/').pop()) : '';
         
-        return `<button onclick="window.location.href='index.html?id=${id}'" ${!onKaytossa ? 'disabled' : ''}>${label}</button>`;
+        return `<button onclick="window.location.href='index.html?id=${id}'" ${!onKelvollinen ? 'disabled' : ''}>${label}</button>`;
     };
 
-    const arvoSatunnainenId = () => {
-        const r = Math.floor(Math.random() * kaikkiPostaukset.length);
-        const p = kaikkiPostaukset[r];
-        return p.id || p.path.split('/').pop();
+    const arvoRandom = () => {
+        const r = Math.floor(Math.random() * postaukset.length);
+        return postaukset[r].id || postaukset[r].path.split('/').pop();
     };
 
-    const navHtml = `
-        ${luoPainike('|<', 0)}
-        ${luoPainike('< Prev', currentIndex - 1)}
-        <button onclick="window.location.href='index.html?id=${arvoSatunnainenId()}'">Random</button>
-        ${luoPainike('Next >', currentIndex + 1)}
-        ${luoPainike('>|', kaikkiPostaukset.length - 1)}
+    const html = `
+        ${luoNappi('|<', 0)}
+        ${luoNappi('< Prev', currentIndex - 1)}
+        <button onclick="window.location.href='index.html?id=${arvoRandom()}'">Random</button>
+        ${luoNappi('Next >', currentIndex + 1)}
+        ${luoNappi('>|', postaukset.length - 1)}
     `;
 
-    containers.forEach(c => c.innerHTML = navHtml);
+    containers.forEach(c => {
+        c.innerHTML = html;
+    });
 }
