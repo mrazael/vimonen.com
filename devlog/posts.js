@@ -11,7 +11,7 @@ const devlogPosts = [
     },
     { 
         id: "0001", 
-        title: "Archives", 
+        title: "Second post", 
         date: "May 7th, 2026",
         path: "2026/05/0001" 
     }
