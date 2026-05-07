@@ -9,7 +9,7 @@
 
         const btn = (label, targetIdx) => {
             const isDisabled = targetIdx === null || targetIdx < 0 || targetIdx >= devlogPosts.length;
-            // Postaukset ovat samassa 'content' kansiossa, joten tarvitaan hyppy takaisin päin
+            // Nousee kolme tasoa päästäkseen content-kansioon
             const targetPath = !isDisabled ? `../../../content/${devlogPosts[targetIdx].path}` : '#';
             return `<button onclick="window.location.href='${targetPath}'" ${isDisabled ? 'disabled' : ''}>${label}</button>`;
         };
@@ -17,7 +17,7 @@
         const navHtml = `
             ${btn('|< First', 0)}
             ${btn('< Prev', currentIndex - 1)}
-            <button onclick="window.location.href='../../../devlog/archive.html'">Archive</button>
+            <button onclick="window.location.href='../../../archive.html'">Archive</button>
             <button onclick="window.location.href='../../../content/${devlogPosts[Math.floor(Math.random() * devlogPosts.length)].path}'">Random</button>
             ${btn('Next >', currentIndex + 1)}
             ${btn('Last >|', devlogPosts.length - 1)}
