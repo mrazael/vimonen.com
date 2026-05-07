@@ -117,3 +117,9 @@ footer {
     padding: 40px 0;
     color: #64748b;
 }
+
+/* Keskittää painikkeen aloitusisvulla */
+.main-homepage {
+    text-align: center;
+    margin-top: 40px; /* Tilaa tekstin ja painikkeen välille */
+}
