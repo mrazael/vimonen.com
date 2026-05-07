@@ -1,4 +1,22 @@
-<article class="devlog-post">
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devlog - Vimonen</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="../index.html" class="logo">← ETUSIVU</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="devlog-nav"></div>
+
+        <article class="devlog-post">
             <h1 id="post-title">Ladataan...</h1>
             <small id="post-date"></small>
             <hr>
@@ -6,11 +24,19 @@
                 </div>
         </article>
 
+        <div class="devlog-nav"></div>
+
         <section class="devlog-archive-inline">
             <h3>Kaikki päivitykset</h3>
             <div id="inline-archive-list"></div>
         </section>
     </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Vimonen - Built with simplicity.</p>
+        </div>
+    </footer>
 
     <script src="posts.js"></script>
     <script src="nav.js"></script>
@@ -19,7 +45,7 @@
             const params = new URLSearchParams(window.location.search);
             let postId = params.get('id');
             
-            // Jos ID:tä ei ole, otetaan uusin
+            // Valitaan postaus (uusin oletuksena)
             let postData = postId 
                 ? devlogPosts.find(p => p.id === postId || p.path.endsWith(postId))
                 : devlogPosts[devlogPosts.length - 1];
@@ -30,10 +56,11 @@
                 
                 try {
                     const response = await fetch(`content/${postData.path}.txt`);
+                    if (!response.ok) throw new Error();
                     const text = await response.text();
                     document.getElementById('post-content').innerHTML = text;
                     
-                    // Kun postaus on ladattu, päivitetään alla oleva arkistolista
+                    // Päivitetään arkisto ja nuoli
                     _paivita_inline_arkisto(postData.id || postData.path.split('/').pop());
                 } catch (e) {
                     document.getElementById('post-content').innerText = "Sisältöä ei löytynyt.";
@@ -43,9 +70,9 @@
 
         function _paivita_inline_arkisto(currentId) {
             const list = document.getElementById("inline-archive-list");
+            if (!list) return;
             list.innerHTML = "";
             
-            // Uusin ensin listassa
             [...devlogPosts].reverse().forEach(post => {
                 const id = post.id || post.path.split('/').pop();
                 const isCurrent = id === currentId;
@@ -61,5 +88,9 @@
                 list.appendChild(item);
             });
         }
+
+        // Käynnistys
         _lataa_sisalto();
     </script>
+</body>
+</html>
