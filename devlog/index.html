@@ -1,64 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devlog - Vimonen</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body>
-    <nav>
-        <div class="container">
-            <a href="../index.html" class="logo">BACK TO HOME</a>
-        </div>
-    </nav>
-
-    <main class="container">
-        <div class="devlog-nav-wrapper">
-            <div class="devlog-nav"></div>
-        </div>
-
-        <article class="devlog-post">
+<article class="devlog-post">
             <h1 id="post-title">Ladataan...</h1>
             <small id="post-date"></small>
             <hr>
             <div id="post-content">
                 </div>
         </article>
+
+        <section class="devlog-archive-inline">
+            <h3>Kaikki päivitykset</h3>
+            <div id="inline-archive-list"></div>
+        </section>
     </main>
 
     <script src="posts.js"></script>
     <script src="nav.js"></script>
     <script>
-    async function _lataa_sisalto() {
-        const params = new URLSearchParams(window.location.search);
-        let postId = params.get('id');
-        
-        // Valitaan postaus datasta
-        let postData = postId 
-            ? devlogPosts.find(p => p.id === postId || p.path.endsWith(postId))
-            : devlogPosts[devlogPosts.length - 1];
-    
-        if (postData) {
-            document.getElementById('post-title').innerText = postData.title;
-            document.getElementById('post-date').innerText = postData.date;
+        async function _lataa_sisalto() {
+            const params = new URLSearchParams(window.location.search);
+            let postId = params.get('id');
             
-            try {
-                // TÄRKEÄ: Hakee suhteessa devlog/index.html tiedostoon.
-                // Jos polku on "2026/05/0000", lopputulos on "content/2026/05/0000.txt"
-                const response = await fetch(`content/${postData.path}.txt`);
+            // Jos ID:tä ei ole, otetaan uusin
+            let postData = postId 
+                ? devlogPosts.find(p => p.id === postId || p.path.endsWith(postId))
+                : devlogPosts[devlogPosts.length - 1];
+
+            if (postData) {
+                document.getElementById('post-title').innerText = postData.title;
+                document.getElementById('post-date').innerText = postData.date;
                 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const text = await response.text();
-                document.getElementById('post-content').innerHTML = text;
-            } catch (e) {
-                console.error("Latausvirhe:", e);
-                document.getElementById('post-content').innerText = "Sisältöä ei löytynyt (404). Tarkista että tiedosto on paikassa: devlog/content/" + postData.path + ".txt";
+                try {
+                    const response = await fetch(`content/${postData.path}.txt`);
+                    const text = await response.text();
+                    document.getElementById('post-content').innerHTML = text;
+                    
+                    // Kun postaus on ladattu, päivitetään alla oleva arkistolista
+                    _paivita_inline_arkisto(postData.id || postData.path.split('/').pop());
+                } catch (e) {
+                    document.getElementById('post-content').innerText = "Sisältöä ei löytynyt.";
+                }
             }
         }
-    }
-    _lataa_sisalto();
+
+        function _paivita_inline_arkisto(currentId) {
+            const list = document.getElementById("inline-archive-list");
+            list.innerHTML = "";
+            
+            // Uusin ensin listassa
+            [...devlogPosts].reverse().forEach(post => {
+                const id = post.id || post.path.split('/').pop();
+                const isCurrent = id === currentId;
+                
+                const item = document.createElement("div");
+                item.className = `archive-row ${isCurrent ? 'active' : ''}`;
+                
+                item.innerHTML = `
+                    <span class="indicator">${isCurrent ? '➔' : ''}</span>
+                    <span class="date">${post.date}</span>
+                    <a href="index.html?id=${id}">${post.title}</a>
+                `;
+                list.appendChild(item);
+            });
+        }
+        _lataa_sisalto();
     </script>
-</body>
-</html>
