@@ -1,11 +1,12 @@
 /**
- * Devlog-postaukset järjestyksessä (vanhin ensin).
- * ID:n on vastattava HTML-tiedoston nimeä.
+ * Devlog-postaukset. Uusin lisätään listan loppuun.
+ * Path on suhteessa content-kansioon.
  */
 const devlogPosts = [
-    { id: "001", title: "Github Pages", date: "2026-05-07" },
-    { id: "002", title: "JS testi", date: "2026-05-07" },
+    { 
+        id: "0000", 
+        title: "Github Pages setup", 
+        date: "2026-05-07",
+        path: "2026/05/0000.html" 
+    },
 ];
-
-// Vie lista muiden scriptien käyttöön
-if (typeof module !== 'undefined') { module.exports = devlogPosts; }
