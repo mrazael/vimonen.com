@@ -20,8 +20,7 @@
             <h1 id="post-title">Ladataan...</h1>
             <small id="post-date"></small>
             <hr>
-            <div id="post-content">
-                </div>
+            <div id="post-content"></div>
         </article>
 
         <section class="devlog-archive-inline">
@@ -63,7 +62,6 @@
                     
                     document.getElementById('post-content').innerHTML = text;
                     
-                    // Päivitetään muut komponentit vasta kun sisältö on ladattu
                     _paivita_navigointi(devlogPosts, tunnus);
                     _paivita_inline_arkisto(tunnus);
                 } catch (e) {
@@ -74,7 +72,7 @@
 
         function _paivita_inline_arkisto(nykyinenId) {
             /**
-             * Rakentaa arkistolistan ja korostaa aktiivisen postauksen.
+             * Rakentaa arkistolistan ja korostaa aktiivisen postauksen ilman tekstin hyppimistä.
              */
             const list = document.getElementById("inline-archive-list");
             if (!list) return;
