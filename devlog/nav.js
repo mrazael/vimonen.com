@@ -11,6 +11,9 @@ function _paivita_navigointi(postaukset, nykyinenId) {
         p.id === nykyinenId || p.path.endsWith(nykyinenId)
     );
 
+    /**
+     * Apufunktio painikkeiden luontiin.
+     */
     const luoNappi = (label, kohdeIdx) => {
         const onKelvollinen = kohdeIdx >= 0 && kohdeIdx < postaukset.length;
         const kohde = onKelvollinen ? postaukset[kohdeIdx] : null;
@@ -19,9 +22,22 @@ function _paivita_navigointi(postaukset, nykyinenId) {
         return `<button onclick="window.location.href='index.html?id=${id}'" ${!onKelvollinen ? 'disabled' : ''}>${label}</button>`;
     };
 
+    /**
+     * Arpoo satunnaisen postauksen ID:n, joka ei ole nykyinen sivu.
+     */
     const arvoRandom = () => {
-        const r = Math.floor(Math.random() * postaukset.length);
-        return postaukset[r].id || postaukset[r].path.split('/').pop();
+        // Suodatetaan pois nykyinen postaus
+        const ehdokkaat = postaukset.filter(p => {
+            const id = p.id || p.path.split('/').pop();
+            return id !== nykyinenId;
+        });
+
+        // Jos muita postauksia ei ole (lista on 1 postauksen pituinen), käytetään alkuperäistä listaa
+        // const lista = ehdokkaat.length > 0 ? ehdokkaat : postaukset;
+        
+        const r = Math.floor(Math.random() * ehdokkaat.length);
+        const valittu = lista[r];
+        return valittu.id || valittu.path.split('/').pop();
     };
 
     const html = `
