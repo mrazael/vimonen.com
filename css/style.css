@@ -104,16 +104,14 @@ nav .container {
     padding: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     align-items: center;
+    /* Korjaus: Varataan tila reunukselle jo valmiiksi */
+    border-left: 4px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .archive-row.active {
     background: rgba(56, 189, 248, 0.1);
     border-left: 4px solid var(--accent-color);
-}
-
-.archive-row .indicator {
-    width: 20px;
-    color: var(--accent-color);
 }
 
 .archive-row .date {
@@ -125,6 +123,7 @@ nav .container {
 .archive-row a {
     color: var(--text-color);
     text-decoration: none;
+    flex-grow: 1;
 }
 
 .archive-row a:hover {
@@ -137,7 +136,6 @@ footer {
     color: #64748b;
 }
 
-/* Keskittää painikkeen aloitussivulla */
 .main-homepage {
     text-align: center;
     margin-top: 40px;
