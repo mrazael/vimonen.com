@@ -8,6 +8,6 @@ const devlogPosts = [
         title: "Github Pages setup", 
         date: "May 7, 2026",
         // Tarkka polu content-kansion sisältä
-        path: "2026/05/0000" 
+        path: "2026/05/0000.txt" 
     }
 ];
