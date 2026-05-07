@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devlog Archive - Vimonen</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <nav class="container">
-        <a href="index.html">← Latest Post</a>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">← LATEST POST</a>
+        </div>
     </nav>
+
     <main class="container">
         <h1>Devlog Archive</h1>
         <div id="archive-list" class="post-list"></div>
@@ -16,20 +20,39 @@
 
     <script src="posts.js"></script>
     <script>
-        const listElement = document.getElementById("archive-list");
-        // Show newest first in the archive
-        const reversedPosts = [...devlogPosts].reverse();
+        /**
+         * Rakentaa arkiston listan posts.js-datan perusteella.
+         * Linkit ohjaavat index.html-sivulle id-parametrilla varustettuna.
+         */
+        function _rakenna_arkisto() {
+            const listElement = document.getElementById("archive-list");
+            if (!listElement || typeof devlogPosts === 'undefined') return;
 
-        reversedPosts.forEach(post => {
-            const article = document.createElement("article");
-            article.style.marginBottom = "20px";
-            article.innerHTML = `
-                <small>${post.date}</small><br>
-                <a href="content/${post.path}" style="font-size: 1.2rem; font-weight: bold;">${post.title}</a>
-                <hr style="border: 0; border-top: 1px solid #334155; margin-top: 10px;">
-            `;
-            listElement.appendChild(article);
-        });
+            // Näytetään uusin ensin arkistossa
+            const reversedPosts = [...devlogPosts].reverse();
+
+            reversedPosts.forEach(post => {
+                const article = document.createElement("article");
+                article.className = "archive-item";
+                article.style.marginBottom = "20px";
+
+                // Haetaan ID joko id-kentästä tai polun lopusta (esim. "0000")
+                const postId = post.id || post.path.split('/').pop();
+
+                // KORJAUS: Linkki osoittaa nyt index.html?id=... eikä suoraan content-kansioon
+                article.innerHTML = `
+                    <small>${post.date}</small><br>
+                    <a href="index.html?id=${postId}" style="font-size: 1.2rem; font-weight: bold; color: var(--accent-color, #3b82f6);">
+                        ${post.title}
+                    </a>
+                    <hr style="border: 0; border-top: 1px solid #334155; margin-top: 10px;">
+                `;
+                listElement.appendChild(article);
+            });
+        }
+
+        // Suoritetaan heti latauksen jälkeen
+        _rakenna_arkisto();
     </script>
 </body>
 </html>
