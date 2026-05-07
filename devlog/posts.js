@@ -1,12 +1,12 @@
 /**
- * Devlog-postaukset. Uusin lisätään listan loppuun.
- * Path on suhteessa content-kansioon.
+ * Devlog-postaukset.
+ * ID:n on vastattava posts/-kansiossa olevan .txt-tiedoston nimeä.
  */
 const devlogPosts = [
     { 
         id: "0000", 
         title: "Github Pages setup", 
-        date: "2026-05-07",
-        path: "2026/05/0000.html" 
-    },
+        date: "May 7, 2026",
+        path: "0000" // Viittaa content/0000.txt tiedostoon
+    }
 ];
