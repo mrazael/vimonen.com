@@ -5,24 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vimonen</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Erityistyylit aloitussivun keskitykseen */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+            color: #94a3b8;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h2>Hello, World.</h2>
-            <p>Come enjoy my journey in developing my first own game from scratch.</p>
+    <nav>
+        <div class="container" style="justify-content: center;">
+            <span class="logo">VIMONEN</span>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Welcome</h1>
+            <p>This is the page where I'll update my progress on my game.</p>
 
             <h2>What's the game about?</h2>
-            <p>When I figure that out, you'll be among the first to know.</p>
-            <div class="cta-buttons">
+            <p>When I'll figure that out, you'll be among the first to know.</p>
+            
+            <div class="actions">
                 <a href="devlog/index.html" class="btn primary">Devlog</a>
             </div>
-        </div>
-    </header>
+        </section>
+    </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026. All rights reserved.</p>
+            <p>&copy; 2026 Vimonen. Nerd on.</p>
         </div>
     </footer>
 </body>
