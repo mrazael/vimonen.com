@@ -34,7 +34,7 @@
         const params = new URLSearchParams(window.location.search);
         let postId = params.get('id');
         
-        // Jos ID:tä ei ole URL:ssa, otetaan viimeisin
+        // Valitaan postaus datasta
         let postData = postId 
             ? devlogPosts.find(p => p.id === postId || p.path.endsWith(postId))
             : devlogPosts[devlogPosts.length - 1];
@@ -44,13 +44,17 @@
             document.getElementById('post-date').innerText = postData.date;
             
             try {
-                // Hakee tiedoston polulla: content/2026/05/0000.txt
+                // TÄRKEÄ: Hakee suhteessa devlog/index.html tiedostoon.
+                // Jos polku on "2026/05/0000", lopputulos on "content/2026/05/0000.txt"
                 const response = await fetch(`content/${postData.path}.txt`);
-                if (!response.ok) throw new Error();
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
                 const text = await response.text();
                 document.getElementById('post-content').innerHTML = text;
             } catch (e) {
-                document.getElementById('post-content').innerText = "Sisältöä ei löytynyt polusta: content/" + postData.path + ".txt";
+                console.error("Latausvirhe:", e);
+                document.getElementById('post-content').innerText = "Sisältöä ei löytynyt (404). Tarkista että tiedosto on paikassa: devlog/content/" + postData.path + ".txt";
             }
         }
     }
