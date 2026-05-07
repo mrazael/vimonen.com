@@ -1,5 +1,4 @@
 <p>
-    I got GitHub Pages for this project up and running. 
-    This is the first step in documenting the journey of developing 
-    my first own game from scratch.
+    I got the page for my game project up and running.
+    This is the first step in documenting the journey.
 </p>
