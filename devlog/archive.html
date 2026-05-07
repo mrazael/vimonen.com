@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Devlog Arkisto</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="container">
+        <a href="index.html">← Newest</a>
+    </nav>
+    <main class="container">
+        <h1>Archives</h1>
+        <div id="archive-list"></div>
+    </main>
+
+    <script src="posts.js"></script>
+    <script>
+        const list = document.getElementById('archive-list');
+        posts.forEach(post => {
+            const item = document.createElement('div');
+            item.innerHTML = `
+                <h3><a href="content/${post.path}">${post.title}</a></h3>
+                <small>${post.date}</small>
+                <hr>
+            `;
+            list.appendChild(item);
+        });
+    </script>
+</body>
+</html>
