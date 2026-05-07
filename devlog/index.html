@@ -84,9 +84,7 @@
                 const id = post.id || post.path.split('/').pop();
                 const onNykyinen = id === nykyinenId;
                 
-                const item = document.createElement("div");
-                item.className = `archive-row ${onNykyinen ? 'active' : ''}`;
-                
+                const item = document.createElement("div");                
                 item.innerHTML = `
                     <span class="date">${post.date}</span>
                     <a href="index.html?id=${id}">${post.title}</a>
