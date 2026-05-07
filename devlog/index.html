@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devlog - Vimonen</title>
-    <link rel="stylesheet" href="../css/style.css"> </head>
+    <link rel="stylesheet" href="../css/style.css"> 
+</head>
 <body>
     <nav>
         <div class="container">
@@ -13,15 +14,28 @@
     </nav>
 
     <main class="container">
-        <h1>Devlog</h1>
-        <div class="post-list">
-            <article>
-                <h3>Ensimmäinen askel: Projektin aloitus</h3>
-                <small>8. toukokuuta 2024</small>
-                <p>Tänään sain domainin vimonen.com pystyyn ja GitHub Pagesin toimimaan...</p>
-                <hr>
-            </article>
-        </div>
+        <h1>Devlog Arkisto</h1>
+        <div id="post-list" class="post-list"></div>
     </main>
+
+    <script src="posts.js"></script>
+    <script>
+        const listElement = document.getElementById("post-list");
+        
+        /**
+         * Luodaan arkistolista uusimmasta vanhimpaan.
+         */
+        const reversedPosts = [...devlogPosts].reverse();
+
+        reversedPosts.forEach(post => {
+            const article = document.createElement("article");
+            article.innerHTML = `
+                <a href="content/${post.path}"><h3>${post.title}</h3></a>
+                <small>${post.date}</small>
+                <hr>
+            `;
+            listElement.appendChild(article);
+        });
+    </script>
 </body>
 </html>
