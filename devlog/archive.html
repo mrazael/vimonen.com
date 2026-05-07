@@ -1,30 +1,34 @@
 <!DOCTYPE html>
-<html lang="fi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Devlog Arkisto</title>
+    <title>Devlog Archive - Vimonen</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <nav class="container">
-        <a href="index.html">← Newest</a>
+        <a href="index.html">← Latest Post</a>
     </nav>
     <main class="container">
-        <h1>Archives</h1>
-        <div id="archive-list"></div>
+        <h1>Devlog Archive</h1>
+        <div id="archive-list" class="post-list"></div>
     </main>
 
     <script src="posts.js"></script>
     <script>
-        const list = document.getElementById('archive-list');
-        posts.forEach(post => {
-            const item = document.createElement('div');
-            item.innerHTML = `
-                <h3><a href="content/${post.path}">${post.title}</a></h3>
-                <small>${post.date}</small>
-                <hr>
+        const listElement = document.getElementById("archive-list");
+        // Show newest first in the archive
+        const reversedPosts = [...devlogPosts].reverse();
+
+        reversedPosts.forEach(post => {
+            const article = document.createElement("article");
+            article.style.marginBottom = "20px";
+            article.innerHTML = `
+                <small>${post.date}</small><br>
+                <a href="content/${post.path}" style="font-size: 1.2rem; font-weight: bold;">${post.title}</a>
+                <hr style="border: 0; border-top: 1px solid #334155; margin-top: 10px;">
             `;
-            list.appendChild(item);
+            listElement.appendChild(article);
         });
     </script>
 </body>
