@@ -37,6 +37,25 @@ nav .container {
     color: var(--text-color);
     text-decoration: none;
     font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Painikkeet ja linkit */
+.btn-primary {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #7dd3fc;
+    transform: translateY(-2px);
 }
 
 /* Devlog-spesifit */
@@ -118,8 +137,8 @@ footer {
     color: #64748b;
 }
 
-/* Keskittää painikkeen aloitusisvulla */
+/* Keskittää painikkeen aloitussivulla */
 .main-homepage {
     text-align: center;
-    margin-top: 40px; /* Tilaa tekstin ja painikkeen välille */
+    margin-top: 40px;
 }
