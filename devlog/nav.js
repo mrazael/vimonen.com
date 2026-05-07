@@ -36,7 +36,7 @@ function _paivita_navigointi(postaukset, nykyinenId) {
         // const lista = ehdokkaat.length > 0 ? ehdokkaat : postaukset;
         
         const r = Math.floor(Math.random() * ehdokkaat.length);
-        const valittu = lista[r];
+        const valittu = ehdokkaat[r];
         return valittu.id || valittu.path.split('/').pop();
     };
 
