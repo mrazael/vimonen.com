@@ -1,3 +1,4 @@
 <p>
     Added functionality to my in-game IDE, and new verbs to my DSL.
+    Decided I'm not going to a demo event next week after all.
 </p>
